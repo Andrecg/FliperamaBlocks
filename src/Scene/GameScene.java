@@ -227,7 +227,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener{
 	private void loadLinhaCor(final int level) {
 
 		//Every 8 lines add bonus line
-		if(level % 2 == 1)
+		if(level % 9 == 8)
 			cor = "Verd";
 		else
 			cor = "Azul";
