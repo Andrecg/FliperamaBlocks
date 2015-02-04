@@ -54,7 +54,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener{
 	/**  Current level */
 	private int level;
 	/**  Array of lines shown in user's perspective */
-	private static Linha linhas[];
+	private static Linha linhas[] = new Linha[11];
 	private float frequencia;
 	/** Background */
 	private Background background;
@@ -227,7 +227,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener{
 	private void loadLinhaCor(final int level) {
 
 		//Every 8 lines add bonus line
-		if(level % 9 == 8)
+		if(level % 2 == 1)
 			cor = "Verd";
 		else
 			cor = "Azul";
@@ -296,7 +296,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener{
 		//load color -> dispose -> new line -> Run
 		if(this.level <=  IndexLinhaAtual){
 			linhas[this.level - 1].stop();
-			loadLinhaCor(this.level);
+			loadLinhaCor(this.level+1);
 			linhas[this.level].dispose();
 			linhas[this.level] = novaLinha(linhas[this.level - 1],linhas[this.level - 1].getNumBlocos(),100*(this.level), cor);
 			attachChild(linhas[this.level]);
@@ -311,7 +311,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener{
 	        	for(int i = 1;i < 11;i++){
 	        		linhas[i-1] = linhas[i];
 	        	}
-	        	loadLinhaCor(this.level); // IndexLinhaAtual
+	        	loadLinhaCor(this.level+1); // IndexLinhaAtual
 	        	linhas[ IndexLinhaAtual].dispose();
 	        	linhas[ IndexLinhaAtual] = novaLinha(linhas[ IndexLinhaAtual - 1],linhas[ IndexLinhaAtual - 1].getNumBlocos(),100*(level),cor);
 	        	attachChild(linhas[ IndexLinhaAtual]);

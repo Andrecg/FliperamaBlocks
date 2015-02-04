@@ -1,9 +1,12 @@
 package Manager;
 
+import java.io.IOException;
+
 import jogo.JogoActivity;
 
+import org.andengine.audio.music.Music;
+import org.andengine.audio.music.MusicFactory;
 import org.andengine.engine.Engine;
-import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.camera.Camera;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
@@ -17,7 +20,7 @@ import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtla
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
-import org.andengine.opengl.texture.region.TiledTextureRegion;
+import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.debug.Debug;
 
@@ -28,16 +31,26 @@ import android.graphics.Color;
 
 public class ResourcesManager
 {
+    
+	//---------------------------------------------
+    // TEXTURES & TEXTURE REGIONS
     //---------------------------------------------
-    // VARIABLES
-    //---------------------------------------------
+    
 	public ITextureRegion splash_region;
 	private BitmapTextureAtlas splashTextureAtlas;
 	
+	// Menu Texture
+	private BuildableBitmapTextureAtlas menuTextureAtlas;
+	
+	// Menu Texture Regions	
 	public ITextureRegion menu_background_region;
 	public ITextureRegion play_region;
-	public ITextureRegion options_region;
+	public ITextureRegion leader_region;
+	public ITextureRegion rate_region;
+	public ITextureRegion share_region;
 	public ITextureRegion exit_region;
+	public ITiledTextureRegion sound_region;
+	public TextureRegion botao_region;
 	
 	// Level Complete Window
 	public ITextureRegion linha_region;
@@ -52,7 +65,11 @@ public class ResourcesManager
 	public ITiledTextureRegion plus_region;
 	
 	
-	private BuildableBitmapTextureAtlas menuTextureAtlas;
+	
+	
+	//---------------------------------------------
+    // VARIABLES
+    //---------------------------------------------
 	
     private static final ResourcesManager INSTANCE = new ResourcesManager();
     
@@ -61,11 +78,9 @@ public class ResourcesManager
     public Camera camera;
     public VertexBufferObjectManager vbom;
     public Font font;
+    public Music menuMusic;
     
     
-    //---------------------------------------------
-    // TEXTURES & TEXTURE REGIONS
-    //---------------------------------------------
     
     //---------------------------------------------
     // CLASS LOGIC
@@ -90,9 +105,14 @@ public class ResourcesManager
         menuTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 2048, 2048, TextureOptions.BILINEAR);
         menu_background_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "menu_background_claro.png");
         play_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "play_escuro_red.png");
-        options_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "options.png");
+        leader_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "leader.png");
+        share_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "share.png");
+        rate_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "rate.png");
         exit_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "sair.png");
-        
+        //Regiao do tiledSprite botao sound
+        sound_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(menuTextureAtlas, activity, "sound.png",2,1);
+        //Regiao do item de menu botao sound
+        botao_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "sound_regiao.png");
         
         try 
         {
@@ -118,7 +138,11 @@ public class ResourcesManager
     
     private void loadMenuAudio()
     {
-        
+    	try{
+    	    menuMusic = MusicFactory.createMusicFromAsset(engine.getMusicManager(), activity,"mfx/Menu.mp3");}
+    	catch (IOException e){
+    	    e.printStackTrace();}
+    	menuMusic.setLooping(true);
     }
     
     
